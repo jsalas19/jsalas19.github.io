@@ -1,12 +1,67 @@
 <!DOCTYPE html>
-<html>
-    <head> 
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <h1>Hello World</h1>
-        <p>I'm hosted with GitHub Pages.</p>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Name — Portfolio</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a2e; background: #fafafa; line-height: 1.6; }
+    .container { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem; }
+    header { text-align: center; padding: 4rem 1.5rem 3rem; }
+    header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    header p { font-size: 1.15rem; color: #555; }
+    section { margin-bottom: 2.5rem; }
+    h2 { font-size: 1.4rem; margin-bottom: 1rem; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.4rem; }
+    .skills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skills span { background: #e8e8ff; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.9rem; }
+    a { color: #4a4aff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    footer { text-align: center; padding: 2rem; color: #888; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Your Name</h1>
+    <p>Software Developer &amp; Designer</p>
+  </header>
 
-        <script src="myscripts.js"></script>
-    </body>
-</html>
+  <div class="container">
+    <section>
+      <h2>About</h2>
+      <p>Brief description of who you are, what you do, and what you're looking for. Keep it to 2–3 sentences.</p>
+    </section>
+
+    <section>
+      <h2>Skills</h2>
+      <div class="skills">
+        <span>HTML</span>
+        <span>CSS</span>
+        <span>JavaScript</span>
+        <span>Python</span>
+        <span>React</span>
+        <span>Git</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Projects</h2>
+      <ul>
+        <li><a href="#">Project One</a> — short description</li>
+        <li><a href="#">Project Two</a> — short description</li>
+        <li><a href="#">Project Three</a> — short description</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+      <p>GitHub: <a href="https://github.com/you">github.com/you</a></p>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Your Name</p>
+  </footer>
+</body>
+</html>   

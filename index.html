@@ -170,15 +170,21 @@
     }
 
     .project-card a {
-      display: inline-block;
-      margin-top: 0.8rem;
-      color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 500;
-      text-decoration: none;
-      border-bottom: 1px solid var(--accent);
-      padding-bottom: 2px;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      cursor: pointer;
     }
+    .project-card {
+      position: relative;
+    }
+
+    .repo-stats {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }   
 
     /* --- Contact --- */
     .contact-links {
@@ -220,11 +226,31 @@
     .cta      { animation-delay: 0.3s; }
   </style>
 </head>
+
+<script>
+  const repos = [
+    { id: 'stats-1', owner: 'jsalas19', repo: 'CS4390_DOSHandler' },
+    { id: 'stats-2', owner: 'jsalas19', repo: 'CS4375' },
+  ];
+
+  repos.forEach(({ id, owner, repo }) => {
+    fetch(`https://api.github.com/repos/${owner}/${repo}`)
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById(id).textContent =
+          `⭐ ${data.stargazers_count}  🍴 ${data.forks_count}`;
+      })
+      .catch(() => {
+        document.getElementById(id).textContent = '';
+      });
+  });
+</script>
+
 <body>
 
   <header>
-    <h1>Your Name</h1>
-    <p>Software Developer &amp; Designer — building clean, functional things for the web.</p>
+    <h1>Joshua Salas</h1>
+    <p> Professional Junior Data Analyst; Amateur Software &amp; Designer — building clean, functional things for the web.</p>
     <a href="#projects" class="cta">View My Work</a>
   </header>
 
@@ -249,26 +275,24 @@
       <div class="projects">
         <div class="project-card">
           <h3>Project One</h3>
-          <p>A short description of what it does and the tech stack used.</p>
-          <a href="#">View Project →</a>
-        </div>
-        <div class="project-card">
-          <h3>Project Two</h3>
-          <p>Another brief description highlighting the problem solved.</p>
-          <a href="#">View Project →</a>
-        </div>
-        <div class="project-card">
-          <h3>Project Three</h3>
-          <p>One more project with a concise summary.</p>
-          <a href="#">View Project →</a>
-        </div>
+          <p>A short description of what it does.</p>
+          <span class="repo-stats" id="stats-1"></span>
+          <a href="https://github.com/jsalas19/CS4390_DOSHandler" target="_blank">View Project →</a>
+        </div>   
+        <<div class="project-card">
+          <h3>Project One</h3>
+          <p>A short description of what it does.</p>
+          <span class="repo-stats" id="stats-1"></span>
+          <a href="https://github.com/jsalas19/CS4375" target="_blank">View Project →</a>
+        </div>   
+        
       </div>
     </section>
 
     <section>
       <h2>Contact</h2>
       <div class="contact-links">
-        <a href="mailto:you@example.com">you@example.com</a>
+        <a href="mailto:you@example.com">jsal61924@gmail.com</a>
         <a href="https://github.com/you">GitHub</a>
         <a href="https://linkedin.com/in/you">LinkedIn</a>
       </div>

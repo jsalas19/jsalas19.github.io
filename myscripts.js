@@ -1,6 +1,6 @@
 
 const repos = [
-{ id: 'stats-1', owner: 'jsalas19', repo: 'CS4390_DOSHandler' },
+{ id: 'stats-1', owner: 'jsalas19', repo: 'EthicalProject-again-2' },
 { id: 'stats-2', owner: 'jsalas19', repo: 'CS4375' },
 ];
 

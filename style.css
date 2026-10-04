@@ -73,7 +73,7 @@ header p {
 
 /* --- Layout --- */
 .container {
-  max-width: 1500px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
@@ -295,3 +295,27 @@ header p  { animation-delay: 0.3s; }
   margin-top: 0.2rem;
   font-family: 'JetBrains Mono', 'Fira Code', monospace;
 }   
+
+/* Smooth scroll for the CTA */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section reveal — hidden by default */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children if desired */
+.reveal.visible .project-card {
+  animation: fadeUp 0.5s ease both;
+}
+.reveal.visible .project-card:nth-child(2) { animation-delay: 0.1s; }
+.reveal.visible .project-card:nth-child(3) { animation-delay: 0.2s; }   

@@ -25,6 +25,16 @@ const observer = new IntersectionObserver(
   { threshold: 0.15 }
 );
 
+// --- Scroll Progress Bar ---
+const progressBar = document.getElementById('scroll-progress');
+
+window.addEventListener('scroll', () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (scrollTop / docHeight) * 100;
+  progressBar.style.width = progress + '%';
+});   
+
 document.querySelectorAll('section').forEach(section => {
   section.classList.add('reveal');
   observer.observe(section);
@@ -168,3 +178,104 @@ document.querySelectorAll('.edu-header').forEach(header => {
     item.classList.toggle('open');
   });
 });   
+
+document.querySelectorAll('.work-item-header').forEach(header => {
+  header.addEventListener('click', () => {
+    const item = header.parentElement;
+    if (item.classList.contains('open')) {
+      item.classList.remove('open');
+      item.classList.add('closed');
+    } else {
+      item.classList.remove('closed');
+      item.classList.add('open');
+    }
+  });
+});   
+
+// --- Typing Animation ---
+const roles = ['Data Analyst', 'Software Developer', 'Software Designer','Game Enthusiast', 'Software Engineer'];
+const typingEl = document.getElementById('typing');
+let roleIndex = 0, charIndex = 0, deleting = false;
+
+function type() {
+  const current = roles[roleIndex];
+
+  if (deleting) {
+    typingEl.textContent = current.slice(0, --charIndex);
+    if (charIndex === 0) {
+      deleting = false;
+      roleIndex = (roleIndex + 1) % roles.length;
+    }
+  } else {
+    typingEl.textContent = current.slice(0, ++charIndex);
+    if (charIndex === current.length) {
+      deleting = true;
+      setTimeout(type, 2000); // pause at full word
+      return;
+    }
+  }
+
+  setTimeout(type, deleting ? 50 : 100);
+}
+
+type();   
+
+// --- Floating Particles ---
+const canvas = document.getElementById('bg-particles');
+if (canvas) {
+  const ctx = canvas.getContext('2d');
+  let particles = [];
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function createParticles() {
+    particles = [];
+    const count = Math.floor(window.innerWidth / 80);
+    for (let i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2 + 0.5,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        alpha: Math.random() * 0.5 + 0.2,
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const color = isLight ? '45, 106, 79' : '45, 212, 168';
+
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${color}, ${p.alpha})`;
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  createParticles();
+  draw();
+
+  window.addEventListener('resize', () => {
+    resize();
+    createParticles();
+  });
+}   

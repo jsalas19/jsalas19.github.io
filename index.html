@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Name — Portfolio</title>
+  <title>Joshua Salas — Portfolio</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 
 <body>
+  <canvas id="bg-particles"></canvas>   
+  <div class="scroll-progress" id="scroll-progress"></div>  
   <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button> 
 
   <header>
-    <h1>Joshua Salas</h1>
-    <p> Professional Junior Data Analyst; Amateur Software Developer &amp; Designer — building clean, functional things for the web.</p>
+  <h1>Joshua Salas</h1>
+    <p>Professional <span class="typing" id="typing"></span><span class="typing-cursor">|</span></p>
     <a href="#projects" class="cta">View My Work</a>
     <a href="projects.html" class="cta cta-secondary">All Projects →</a>
-  </header>
+</header>   
 
   <div class="container">
 
@@ -37,7 +39,14 @@
             <span class="work-company">Steampunk</span>
             <span class="work-period">2026 – Present</span>
           </div>
-          <p class="work-desc">Brief description of what you do in this role — key responsibilities, tools used, or impact.</p>
+          <ul class="work-desc">
+            <li>Developed tools and propose systems that increase organizational efficiency.</li>
+            <li>Created data visualization dashboards with Power BI that allowed for better time and task management 
+            in my department.</li>
+            <li>Worked on the frontend of a company dashboard to locate documents and view the progress of new hires
+            and other employees.</li>
+          </ul>
+          
         </div>   
         <!-- Add more items as needed -->
       </div>
@@ -50,10 +59,12 @@
           <div class="edu-header">
             <span class="edu-degree">B.S. in Computer Science</span>
             <span class="edu-school">University of Texas – El Paso</span>
-            <span class="edu-period">2022 – 2025</span>
+            
+            <span class="edu-period">2018 – 2025</span>
             <span class="edu-icon">▸</span>
           </div>
           <div class="edu-body">
+            <p class="edu-minor">Minor in Mathematics</p>
             <p>Relevant coursework, honors, or a short note about your focus area.</p>
           </div>
         </div>

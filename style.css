@@ -25,8 +25,8 @@ html { scroll-behavior: smooth; }
   --accent-glow: rgba(79, 70, 229, 0.2);
   --hero-accent: #e11d48;
   --hero-accent-glow: rgba(225, 29, 72, 0.15);
-  --text: #1e293b;
-  --text-muted: #64748b;
+  --text: #0a0c10;
+  --text-muted: #060606;
   --border: rgba(0, 0, 0, 0.08);
 }
 

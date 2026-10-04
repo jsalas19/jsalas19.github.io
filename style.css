@@ -73,7 +73,7 @@ header p {
 
 /* --- Layout --- */
 .container {
-  max-width: 800px;
+  max-width: 1100px;
   margin: 0 auto;
   padding: 0 2rem;
   position: relative;
@@ -227,7 +227,7 @@ header p  { animation-delay: 0.3s; }
   align-items: start;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .projects-layout {
     grid-template-columns: 1fr;
   }

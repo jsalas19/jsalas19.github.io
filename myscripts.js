@@ -1,7 +1,9 @@
 
 const repos = [
 { id: 'stats-1', owner: 'jsalas19', repo: 'EthicalProject-again-2' },
-{ id: 'stats-2', owner: 'jsalas19', repo: 'CS4375' },
+{ id: 'stats-2', owner: 'jsalas19', repo: 'TicTacToe' },
+{ id: 'stats-3', owner: 'jsalas19', repo: 'SnakeGame2.0' },
+{ id: 'stats-4', owner: 'jsalas19', repo: 'CS4375' }
 ];
 
 repos.forEach(({ id, owner, repo }) => {

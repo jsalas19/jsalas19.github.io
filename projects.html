@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects — Joshua Salas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button>
+
+  <header class="page-header">
+    <h1>Projects</h1>
+    <p>A collection of things I've built.</p>
+    <a href="index.html" class="cta">← Back to Home</a>
+  </header>
+
+  <div class="container">
+    <div class="projects-page">
+      <nav class="project-menu" id="project-menu">
+        <!-- Populated by JS -->
+      </nav>
+      <main class="readme-viewer" id="readme-viewer">
+        <div class="readme-placeholder">Select a project to view its README</div>
+      </main>
+      <aside class="commits-panel">
+        <h3>Recent Commits</h3>
+        <div id="commits-list"></div>
+      </aside>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Joshua Salas</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="myscripts.js"></script>
+</body>
+</html>   

@@ -9,10 +9,11 @@
 
 
 <body>
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">🌙</button> 
 
   <header>
     <h1>Joshua Salas</h1>
-    <p> Professional Junior Data Analyst; Amateur Software &amp; Designer — building clean, functional things for the web.</p>
+    <p> Professional Junior Data Analyst; Amateur Software Developer &amp; Designer — building clean, functional things for the web.</p>
     <a href="#projects" class="cta">View My Work</a>
   </header>
 
@@ -81,12 +82,43 @@
 
     <section>
       <h2>Contact</h2>
-      <div class="contact-links">
-        <a href="mailto:you@example.com">jsal61924@gmail.com</a>
-        <a href="https://github.com/jsalas19">GitHub</a>
-        <a href="https://linkedin.com/in/jsalas19">LinkedIn</a>
+      <div class="contact-wrapper">
+        <div class="contact-card">
+          <h3>Get in Touch</h3>
+          <p class="contact-role">I usually reply within a day</p>
+
+          <form action="https://formsubmit.co/jsal61924@gmail.com" method="POST" class="contact-form">
+            <input type="text" name="name" placeholder="Your name" required>
+            <input type="email" name="email" placeholder="Your email" required>
+            <textarea name="message" rows="4" placeholder="Message" required></textarea>
+            <button type="submit">Send →</button>
+          </form>
+        </div>   
+
+        <div class="social-links">
+          <a href="https://github.com/jsalas19" target="_blank" aria-label="GitHub">
+            <svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
+          </a>
+          <a href="https://linkedin.com/in/jsalas915" target="_blank" aria-label="LinkedIn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 110-4.12 2.06 2.06 0 010 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/>
+            </svg>
+          </a>
+          <a href="https://x.com/you" target="_blank" aria-label="X / Twitter">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82L5 21.75H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23 5.45-6.23zm-1.16 17.52h1.83L7.08 4.13H5.12l11.96 15.64z"/>
+            </svg>
+          </a>
+          <a href="https://dribbble.com/you" target="_blank" aria-label="Dribbble">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm9.88 5.53a10.16 10.16 0 012.32 6.4c-.34-.07-3.73-.76-7.13-.33-.08-.17-.15-.35-.23-.53-.21-.5-.44-1-.68-1.48 3.77-1.54 5.48-3.76 5.72-4.06zM12 1.77c2.6 0 4.98.98 6.79 2.58-.2.28-1.75 2.36-5.39 3.73A52.3 52.3 0 009.5 2.1c.8-.2 1.63-.33 2.5-.33zM7.64 2.77a63 63 0 013.83 5.93c-4.83 1.28-9.08 1.26-9.54 1.26a10.27 10.27 0 015.71-7.19zM1.75 12v-.32c.44.01 5.46.06 10.62-1.48.3.57.58 1.15.84 1.74l-.41.12c-5.34 1.72-8.16 6.42-8.4 6.8A10.18 10.18 0 011.75 12zm10.25 10.23a10.18 10.18 0 01-6.25-2.16c.18-.37 2.2-4.26 8.03-6.27l.07-.02a42.6 42.6 0 012.18 7.78 10.14 10.14 0 01-4.03.67zm5.71-1.78a44 44 0 00-2-7.32c3.2-.51 6 .32 6.35.43a10.22 10.22 0 01-4.35 6.89z"/>
+            </svg>
+          </a>
+        </div>
       </div>
-    </section>
+    </section>   
 
   </div>
 
@@ -95,4 +127,6 @@
   </footer>
   <script src="myscripts.js"></script>
 </body>
+
+
 </html>   

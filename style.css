@@ -1,19 +1,33 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');   
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
 
 :root {
   --bg: #0f0f1a;
   --surface: #1a1a2e;
   --card: #16213e;
-  --accent: #ff6b6b;
+  --accent: #6c63ff;
   --accent-glow: rgba(108, 99, 255, 0.3);
   --hero-accent: #ff6b6b;
   --hero-accent-glow: rgba(255, 107, 107, 0.25);
   --text: #e2e8f0;
   --text-muted: #94a3b8;
   --border: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] {
+  --bg: #9ba1a8;
+  --surface: #ffffff;
+  --card: #f1f5f9;
+  --accent: #4f46e5;
+  --accent-glow: rgba(79, 70, 229, 0.2);
+  --hero-accent: #e11d48;
+  --hero-accent-glow: rgba(225, 29, 72, 0.15);
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: rgba(0, 0, 0, 0.08);
 }
 
 body {
@@ -24,7 +38,43 @@ body {
   overflow-x: hidden;
 }
 
-/* --- Hero (warm palette) --- */
+body::before {
+  content: '';
+  position: fixed;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --- Theme Toggle --- */
+.theme-toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+/* --- Hero --- */
 header {
   --accent: var(--hero-accent);
   --accent-glow: var(--hero-accent-glow);
@@ -80,10 +130,8 @@ header p {
   z-index: 1;
 }
 
-/* --- Sections (cool palette) --- */
-section {
-  margin: 5rem 0;
-}
+/* --- Sections --- */
+section { margin: 5rem 0; }
 
 h2 {
   font-size: 1.5rem;
@@ -100,8 +148,20 @@ h2::after {
   left: 0;
   width: 40px;
   height: 3px;
-  background: var(--accent);
+  background: var(--hero-accent);
   border-radius: 2px;
+}
+
+/* --- Reveal Animation --- */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* --- Skills --- */
@@ -121,8 +181,18 @@ h2::after {
   transition: border-color 0.2s;
 }
 
-.skills span:hover {
-  border-color: var(--accent);
+.skills span:hover { border-color: var(--hero-accent); }
+
+/* --- Projects Layout --- */
+.projects-layout {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .projects-layout { grid-template-columns: 1fr; }
 }
 
 /* --- Project Cards --- */
@@ -142,13 +212,13 @@ h2::after {
 
 .project-card:hover {
   transform: translateY(-3px);
-  border-color: var(--accent);
+  border-color: var(--hero-accent);
 }
 
 .project-card h3 {
   font-size: 1.1rem;
   margin-bottom: 0.4rem;
-  color: var(--accent);
+  color: var(--hero-accent);
 }
 
 .project-card p {
@@ -162,7 +232,7 @@ h2::after {
   color: var(--text);
   font-size: 0.9rem;
   font-weight: 500;
-  border-bottom: 1px solid var(--accent);
+  border-bottom: 1px solid var(--hero-accent);
   padding-bottom: 2px;
 }
 
@@ -180,59 +250,7 @@ h2::after {
   margin-top: 0.5rem;
 }
 
-/* --- Contact --- */
-.contact-links {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.contact-links a {
-  color: var(--text-muted);
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.2s;
-}
-
-.contact-links a:hover {
-  color: var(--accent);
-}
-
-/* --- Footer --- */
-footer {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-  border-top: 1px solid var(--border);
-}
-
-/* --- Animations --- */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-header h1, header p, .cta {
-  animation: fadeUp 0.6s ease both;
-}
-header p  { animation-delay: 0.3s; }
-.cta      { animation-delay: 0.3s; }   
-
-/* Git */
-.projects-layout {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 1.5rem;
-  align-items: start;
-}
-
-@media (max-width: 900px) {
-  .projects-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* --- Commits Sidebar --- */
 .commits-panel {
   --sidebar-accent: #2dd4a8;
   --sidebar-accent-glow: rgba(45, 212, 168, 0.15);
@@ -246,8 +264,6 @@ header p  { animation-delay: 0.3s; }
   border: 1px solid var(--sidebar-border);
   border-radius: 12px;
   padding: 1.2rem;
-  max-height: 400px;
-  overflow-y: auto;
   box-shadow: 0 4px 24px var(--sidebar-accent-glow);
 }
 
@@ -271,6 +287,17 @@ header p  { animation-delay: 0.3s; }
   50%      { opacity: 0.4; }
 }
 
+#commits-list {
+  max-height: 340px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#commits-list::-webkit-scrollbar {
+  display: none;
+}
+
 .commit-item {
   margin-bottom: 0.8rem;
   padding: 0.6rem 0.8rem;
@@ -286,34 +313,125 @@ header p  { animation-delay: 0.3s; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .commit-meta {
   color: var(--sidebar-muted);
   font-size: 0.72rem;
   margin-top: 0.2rem;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* --- Contact --- */
+.contact-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+/* No box — just spacing */
+.contact-card {
+  flex: 1;
+  min-width: 280px;
+}
+
+.contact-card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.2rem;
+}
+
+.contact-role {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  transition: border-color 0.2s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--hero-accent);
+}
+
+.contact-form button {
+  align-self: flex-start;
+  background: var(--hero-accent);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.contact-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--accent-glow);
+}
+
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 2.2rem; /* aligns icons roughly with the form heading */
+}
+
+.social-links a {
+  color: var(--text-muted);
+  transition: color 0.2s, transform 0.2s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.social-links a:hover {
+  color: var(--accent);
+  transform: translateX(4px);
 }   
 
-/* Smooth scroll for the CTA */
-html {
-  scroll-behavior: smooth;
+/* --- Footer --- */
+footer {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--border);
 }
 
-/* Section reveal — hidden by default */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+/* --- Hero Animations --- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
+header h1, header p, .cta {
+  animation: fadeUp 0.6s ease both;
 }
+header p { animation-delay: 0.15s; }
+.cta     { animation-delay: 0.3s; }
 
-/* Stagger children if desired */
+/* --- Card Stagger (on reveal) --- */
 .reveal.visible .project-card {
   animation: fadeUp 0.5s ease both;
 }

@@ -760,7 +760,7 @@ header p { animation-delay: 0.15s; }
   }
 
   #commits-list {
-    max-height: 240px;
+    max-height: 180px;
   }
 
   /* Work & Education headers wrap cleanly */
@@ -850,11 +850,33 @@ header p { animation-delay: 0.15s; }
 
   /* README viewer tighter on mobile */
   .readme-viewer {
-    padding: 1.2rem;
+    padding: 1rem;
+    min-height: 200px;
+    font-size: 0.85rem;
   }
 
   .readme-viewer pre {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    padding: 0.6rem;
+  }
+
+    /* Commits panel smaller on mobile */
+  .commits-panel {
+    padding: 0.8rem;
+  }
+
+  .commit-item {
+    margin-bottom: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
+  }
+
+  .commit-msg {
+    font-size: 0.7rem;
+  }
+
+  .commit-meta {
+    font-size: 0.65rem;
   }
 }
 
@@ -868,7 +890,8 @@ header p { animation-delay: 0.15s; }
   }
 
   .commit-item {
-    padding: 0.5rem 0.6rem;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.65rem;
   }
 
   .contact-form button {
@@ -880,6 +903,21 @@ header p { animation-delay: 0.15s; }
   .edu-header {
     font-size: 0.9rem;
   }
+
+  .readme-viewer {
+    padding: 0.8rem;
+    min-height: 150px;
+    font-size: 0.8rem;
+  }
+ 
+  #commits-list {
+    max-height: 140px;
+  }
+
+.commit-item {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.65rem;
+}   
 }   
 
 .work-experience {

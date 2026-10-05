@@ -132,6 +132,8 @@ header p {
   text-decoration: none;
   font-size: clamp(0.85rem, 1.5vw, 1rem);
   transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
 }
 
 .cta:hover {
@@ -151,6 +153,22 @@ header p {
   background: var(--hero-accent);
   color: #fff;
   box-shadow: none;
+}
+
+.cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0);
+  transition: transform 0.5s, opacity 0.5s;
+}
+
+.cta:active::after {
+  opacity: 1;
+  transform: scale(2.5);
+  transition: 0s;
 }
 
 /* --- Layout --- */
@@ -178,11 +196,16 @@ h2::after {
   position: absolute;
   bottom: -6px;
   left: 0;
-  width: 40px;
+  width: 0;
   height: 3px;
   background: var(--accent);
   border-radius: 2px;
+  transition: width 0.4s ease 0.3s;
 }
+
+.reveal.visible h2::after {
+  width: 40px;
+}   
 
 /* --- Reveal Animation --- */
 .reveal {
@@ -211,7 +234,19 @@ h2::after {
   font-size: 0.9rem;
   font-weight: 500;
   transition: border-color 0.2s;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 0.4s ease forwards;
 }
+
+.skills span:nth-child(1) { animation-delay: 0.05s; }
+.skills span:nth-child(2) { animation-delay: 0.1s; }
+.skills span:nth-child(3) { animation-delay: 0.15s; }
+.skills span:nth-child(4) { animation-delay: 0.2s; }
+.skills span:nth-child(5) { animation-delay: 0.25s; }
+.skills span:nth-child(6) { animation-delay: 0.3s; }
+.skills span:nth-child(7) { animation-delay: 0.35s; }
+.skills span:nth-child(8) { animation-delay: 0.4s; }   
 
 .skills span:hover { border-color: var(--accent); }
 
@@ -717,6 +752,14 @@ header p { animation-delay: 0.15s; }
     padding: 1.5rem;
   }
 
+  /* Stack CTA buttons vertically */
+  header .cta {
+    display: block;
+    width: fit-content;
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+
   .container {
     padding: 0 1.2rem;
   }
@@ -728,6 +771,29 @@ header p { animation-delay: 0.15s; }
 
   #commits-list {
     max-height: 240px;
+  }
+
+  /* Work & Education headers wrap cleanly */
+  .work-item-header,
+  .edu-header {
+    flex-wrap: wrap;
+    gap: 0.4rem 0.8rem;
+  }
+
+  .work-period,
+  .edu-period {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .work-item,
+  .edu-item {
+    padding: 0.8rem 1rem;
+  }
+
+  /* Viz card */
+  .viz-card {
+    padding: 1rem;
   }
 
   .contact-wrapper {
@@ -791,9 +857,22 @@ header p { animation-delay: 0.15s; }
   .project-menu a.active {
     border-color: var(--accent);
   }
+
+  /* README viewer tighter on mobile */
+  .readme-viewer {
+    padding: 1.2rem;
+  }
+
+  .readme-viewer pre {
+    font-size: 0.75rem;
+  }
 }
 
 @media (max-width: 400px) {
+  header h1 {
+    font-size: 1.7rem;
+  }
+
   .project-card {
     padding: 1rem;
   }
@@ -805,6 +884,11 @@ header p { animation-delay: 0.15s; }
   .contact-form button {
     width: 100%;
     align-self: stretch;
+  }
+
+  .work-item-header,
+  .edu-header {
+    font-size: 0.9rem;
   }
 }   
 

@@ -279,3 +279,28 @@ if (canvas) {
     createParticles();
   });
 }   
+
+// --- Scramble Decode ---
+const nameEl = document.querySelector('header h1');
+if (nameEl) {
+  const chars = '!<>-_\\/[]{}—=+*^?#________';
+  const original = nameEl.textContent;
+  let frame = 0;
+
+  function scramble() {
+    if (frame >= original.length * 3) {
+      nameEl.textContent = original;
+      return;
+    }
+    nameEl.textContent = original.split('').map((ch, i) => {
+      if (ch === ' ') return ' ';
+      if (i < frame / 3) return ch;
+      return chars[Math.floor(Math.random() * chars.length)];
+    }).join('');
+    frame++;
+    requestAnimationFrame(scramble);
+  }
+
+  // Start after a short delay so the page feels intentional
+  setTimeout(scramble, 300);
+}   

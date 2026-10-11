@@ -822,7 +822,7 @@ header p { animation-delay: 0.15s; }
 
   .projects-page {
     grid-template-columns: 1fr;
-    padding-right: 0.5rem;
+    padding-right: 1rem;
   }
 
   .project-menu {

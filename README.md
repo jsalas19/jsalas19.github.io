@@ -1,4 +1,4 @@
-# Joshua Salas Portfolio
+# My Portfolio
 
 A personal portfolio website for Joshua Salas, built as a lightweight static site and hosted on GitHub Pages. The site highlights his background, work experience, education, technical skills, and featured projects in a clean, responsive layout.
 

@@ -55,23 +55,25 @@ const MAX_CARDS = 3;
 
 // Only show these repos (by name)
 const SHOW_REPOS = [
-  'CS4375',
+  'Tetris-Rust',
   'EthicalProject-again-2',
   'SnakeGame2.0',
   'TicTacToe',
   'ML-Song-Emotions-project',
   'Banking-System',
-  'Simple-ATM'
+  'Simple-ATM',
+  'Password-Vault'
 ];
 
 const PROJECT_DESCRIPTIONS = {
-  'CS4375': 'A collection of computer science coursework, including Python exercises on chatbots, process management, and process scheduling.',
+  'Tetris-Rust': 'A Rust implementation of the classic Tetris game with a modern UI and efficient performance.',
   'EthicalProject-again-2': 'A Mininet and Ryu SDN prototype that detects unusually high traffic and migrates an affected host to help mitigate a denial-of-service attack.',
   'SnakeGame2.0': 'A classic grid-based Snake game built with Java Swing, featuring keyboard controls, food collection, collision detection, and restartable rounds.',
   'TicTacToe': 'A Java Swing Tic-Tac-Toe game with local two-player mode and an AI opponent that can take winning moves and block immediate threats.',
   'ML-Song-Emotions-project': 'A machine-learning project that uses Spotify song metadata and a multilayer perceptron to classify tracks into four moods.',
   'Banking-System': 'A Java-based banking application with customer and manager access, account management, transaction logging, and CSV-backed persistence for a classroom OOP project.',
-  'Simple-ATM': 'A Python and Flask ATM demo with PIN authentication, balance tracking, deposits, withdrawals, and a lockout system powered by SQLite.'
+  'Simple-ATM': 'A Python and Flask ATM demo with PIN authentication, balance tracking, deposits, withdrawals, and a lockout system powered by SQLite.',
+  'Password-Vault': 'A Rust-based password manager with encryption, secure storage, and a gui.'
 };
 
 let repos = [];

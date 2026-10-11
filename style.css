@@ -730,6 +730,11 @@ header p { animation-delay: 0.15s; }
   text-align: left;
 }
 
+.readme-viewer th:first-child,
+.readme-viewer td:first-child {
+  min-width: 10rem;
+}
+
 .readme-viewer th {
   background: var(--card);
   font-weight: 600;

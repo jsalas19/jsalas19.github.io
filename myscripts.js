@@ -62,6 +62,14 @@ const SHOW_REPOS = [
   'ML-Song-Emotions-project'
 ];
 
+const PROJECT_DESCRIPTIONS = {
+  'CS4375': 'A collection of computer science coursework, including Python exercises on chatbots, process management, and process scheduling.',
+  'EthicalProject-again-2': 'A Mininet and Ryu SDN prototype that detects unusually high traffic and migrates an affected host to help mitigate a denial-of-service attack.',
+  'SnakeGame2.0': 'A classic grid-based Snake game built with Java Swing, featuring keyboard controls, food collection, collision detection, and restartable rounds.',
+  'TicTacToe': 'A Java Swing Tic-Tac-Toe game with local two-player mode and an AI opponent that can take winning moves and block immediate threats.',
+  'ML-Song-Emotions-project': 'A machine-learning project that uses Spotify song metadata and a multilayer perceptron to classify tracks into four moods.'
+};
+
 let repos = [];
 
 async function loadRepos() {
@@ -140,7 +148,7 @@ function renderProjectCards(container, projectRepos) {
     card.append(title);
 
     const description = document.createElement('p');
-    description.textContent = repo.description || 'Project details coming soon.';
+    description.textContent = PROJECT_DESCRIPTIONS[repo.name] || repo.description || 'Project details coming soon.';
     card.append(description);
 
     const stats = document.createElement('span');

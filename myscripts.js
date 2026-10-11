@@ -28,12 +28,13 @@ const observer = new IntersectionObserver(
 // --- Scroll Progress Bar ---
 const progressBar = document.getElementById('scroll-progress');
 
-window.addEventListener('scroll', () => {
-  const scrollTop = window.scrollY;
-  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const progress = (scrollTop / docHeight) * 100;
-  progressBar.style.width = progress + '%';
-});   
+if (progressBar) {
+  window.addEventListener('scroll', () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+    progressBar.style.width = `${progress}%`;
+  });
+}
 
 document.querySelectorAll('section').forEach(section => {
   section.classList.add('reveal');
@@ -41,9 +42,11 @@ document.querySelectorAll('section').forEach(section => {
 });
 
 // --- CTA Press Effect ---
-document.querySelector('.cta').addEventListener('click', function () {
-  this.style.transform = 'scale(0.95)';
-  setTimeout(() => { this.style.transform = ''; }, 150);
+document.querySelectorAll('.cta').forEach(button => {
+  button.addEventListener('click', () => {
+    button.style.transform = 'scale(0.95)';
+    setTimeout(() => { button.style.transform = ''; }, 150);
+  });
 });
 
 // --- GitHub: Fetch repos sorted by last update ---
@@ -56,129 +59,247 @@ const SHOW_REPOS = [
   'EthicalProject-again-2',
   'SnakeGame2.0',
   'TicTacToe',
+  'ML-Song-Emotions-project'
 ];
 
 let repos = [];
 
 async function loadRepos() {
+  const projectsGrid = document.getElementById('projects-grid');
+  const commitsContainer = document.getElementById('commits-list');
+  const projectMenu = document.getElementById('project-menu');
+
+  if (projectsGrid) showMessage(projectsGrid, 'Loading projects…');
+  if (commitsContainer) showMessage(commitsContainer, 'Loading recent commits…');
+
   try {
     const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated&direction=desc`);
+    if (!res.ok) throw new Error(`GitHub returned ${res.status}`);
     const data = await res.json();
+    if (!Array.isArray(data)) throw new Error('GitHub returned an unexpected repository list');
 
     repos = data
-      .filter(r => r.fork === false)
+      
       .filter(r => SHOW_REPOS.includes(r.name));
 
-    // Render cards on index.html only
-    const projectsGrid = document.getElementById('projects-grid');
     if (projectsGrid) {
-      const top = repos.slice(0, MAX_CARDS);
-      projectsGrid.innerHTML = top.map((r, i) => `
-        <div class="project-card">
-          <h3>${r.name}</h3>
-          <p>${r.description || 'No description.'}</p>
-          <span class="repo-stats">⭐ ${r.stargazers_count}  🍴 ${r.forks_count}  ·  Updated ${new Date(r.updated_at).toLocaleDateString()}</span>
-          <span class="view-link">View Project →</span>
-          <a class="card-overlay" href="${r.html_url}" target="_blank" aria-label="View ${r.name}"></a>
-        </div>
-      `).join('');
+      renderProjectCards(projectsGrid, repos.slice(0, MAX_CARDS));
     }
 
-    // Load commits for the sidebar
-    fetchCommits();
+    if (projectMenu) renderProjectMenu(projectMenu);
+    await fetchCommits();
   } catch (err) {
     console.error('Failed to load repos:', err);
+    if (projectsGrid) showMessage(projectsGrid, 'Projects are unavailable right now. Please try again later.');
+    if (projectMenu) showMessage(projectMenu, 'Projects could not be loaded. Please try again later.');
+    if (commitsContainer) showMessage(commitsContainer, 'Recent commits are unavailable because the project list could not be loaded.');
   }
+}
+
+function showMessage(container, message) {
+  const status = document.createElement('p');
+  status.className = 'content-status';
+  status.setAttribute('role', 'status');
+  status.textContent = message;
+  container.replaceChildren(status);
+}
+
+function createExternalLink(label, href, className) {
+  let url;
+  try {
+    url = new URL(href);
+  } catch {
+    console.warn(`Skipped an invalid ${label.toLowerCase()} URL:`, href);
+    return null;
+  }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return null;
+
+  const link = document.createElement('a');
+  link.className = className;
+  link.href = url.href;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.textContent = label;
+  return link;
+}
+
+function renderProjectCards(container, projectRepos) {
+  if (projectRepos.length === 0) {
+    showMessage(container, 'No featured projects are available right now.');
+    return;
+  }
+
+  const cards = projectRepos.map(repo => {
+    const card = document.createElement('article');
+    card.className = 'project-card';
+
+    const title = document.createElement('h3');
+    const repoLink = createExternalLink(repo.name, repo.html_url, 'project-link');
+    if (repoLink) title.append(repoLink);
+    else title.textContent = repo.name;
+    card.append(title);
+
+    const description = document.createElement('p');
+    description.textContent = repo.description || 'Project details coming soon.';
+    card.append(description);
+
+    const stats = document.createElement('span');
+    stats.className = 'repo-stats';
+    const updated = new Date(repo.updated_at);
+    const updatedText = Number.isNaN(updated.getTime()) ? '' : ` · Updated ${updated.toLocaleDateString()}`;
+    stats.textContent = `⭐ ${repo.stargazers_count}  🍴 ${repo.forks_count}${updatedText}`;
+    card.append(stats);
+
+    const links = document.createElement('div');
+    links.className = 'project-links';
+    if (repoLink) {
+      const sourceLink = createExternalLink('View source', repo.html_url, 'view-link');
+      if (sourceLink) links.append(sourceLink);
+    }
+    if (repo.homepage) {
+      const demoLink = createExternalLink('Live demo', repo.homepage, 'view-link');
+      if (demoLink) links.append(demoLink);
+    }
+    if (links.childElementCount > 0) card.append(links);
+
+    return card;
+  });
+
+  container.replaceChildren(...cards);
 }
 
 async function fetchCommits() {
   const commitsContainer = document.getElementById('commits-list');
   if (!commitsContainer) return;
 
-  const allCommits = [];
-
-  for (const r of repos.slice(0, 3)) {
-    try {
-      const res = await fetch(`https://api.github.com/repos/${r.owner.login}/${r.name}/commits?per_page=5`);
-      const data = await res.json();
-      data.forEach(c => allCommits.push({
-        repo: r.name,
-        msg: c.commit.message.split('\n')[0],
-        date: c.commit.author.date,
-        sha: c.sha.slice(0, 7),
-      }));
-    } catch {}
+  if (repos.length === 0) {
+    showMessage(commitsContainer, 'No recent commits are available.');
+    return;
   }
 
+  const results = await Promise.all(repos.slice(0, 3).map(async repo => {
+    try {
+      const res = await fetch(`https://api.github.com/repos/${repo.owner.login}/${repo.name}/commits?per_page=5`);
+      if (!res.ok) throw new Error(`GitHub returned ${res.status}`);
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error('GitHub returned an unexpected commit list');
+      return data.map(commit => ({
+        repo: repo.name,
+        msg: commit.commit.message.split('\n')[0],
+        date: commit.commit.author.date,
+        sha: commit.sha.slice(0, 7),
+      }));
+    } catch (err) {
+      console.error(`Failed to load commits for ${repo.name}:`, err);
+      return [];
+    }
+  }));
+
+  const allCommits = results.flat();
   allCommits.sort((a, b) => new Date(b.date) - new Date(a.date));
   const top = allCommits.slice(0, 10);
 
-  commitsContainer.innerHTML = top.map(c => `
-    <div class="commit-item">
-      <div class="commit-msg" title="${c.msg}">${c.msg}</div>
-      <div class="commit-meta">${c.repo} · ${c.sha} · ${new Date(c.date).toLocaleDateString()}</div>
-    </div>
-  `).join('');
+  if (top.length === 0) {
+    showMessage(commitsContainer, 'Recent commits could not be loaded.');
+    return;
+  }
+
+  const items = top.map(commit => {
+    const item = document.createElement('div');
+    item.className = 'commit-item';
+
+    const message = document.createElement('div');
+    message.className = 'commit-msg';
+    message.title = commit.msg;
+    message.textContent = commit.msg;
+    item.append(message);
+
+    const meta = document.createElement('div');
+    meta.className = 'commit-meta';
+    const date = new Date(commit.date);
+    const dateText = Number.isNaN(date.getTime()) ? '' : ` · ${date.toLocaleDateString()}`;
+    meta.textContent = `${commit.repo} · ${commit.sha}${dateText}`;
+    item.append(meta);
+    return item;
+  });
+  commitsContainer.replaceChildren(...items);
 }
 
 // --- Projects Page: Menu + README Viewer ---
 async function loadReadme(index) {
   const r = repos[index];
   const readmeViewer = document.getElementById('readme-viewer');
-  if (!readmeViewer) return;
+  if (!readmeViewer || !r) return;
 
+  readmeViewer.dataset.index = String(index);
   readmeViewer.innerHTML = '<div class="readme-placeholder">Loading…</div>';
 
   try {
     const res = await fetch(`https://api.github.com/repos/${r.owner.login}/${r.name}/readme`);
-    if (!res.ok) throw new Error('No README');
+    if (readmeViewer.dataset.index !== String(index)) return;
+    if (res.status === 404) {
+      showMessage(readmeViewer, `No README found for ${r.name}.`);
+      return;
+    }
+    if (!res.ok) throw new Error(`GitHub returned ${res.status}`);
     const data = await res.json();
+    if (readmeViewer.dataset.index !== String(index)) return;
 
-    const raw = atob(data.content);
+    const bytes = Uint8Array.from(atob(data.content), char => char.charCodeAt(0));
+    const raw = new TextDecoder('utf-8').decode(bytes);
     readmeViewer.innerHTML = marked.parse(raw);
-  } catch {
-    readmeViewer.innerHTML = `<div class="readme-placeholder">No README for <strong>${r.name}</strong></div>`;
+
+    readmeViewer.querySelectorAll('a[href], img[src], source[src]').forEach(element => {
+      const attribute = element.hasAttribute('href') ? 'href' : 'src';
+      const url = element.getAttribute(attribute);
+      if (!url || /^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(url)) return;
+
+      const baseUrl = attribute === 'href' ? data.html_url : data.download_url;
+      if (baseUrl) element.setAttribute(attribute, new URL(url, baseUrl).href);
+    });
+  } catch (err) {
+    console.error(`Failed to load README for ${r.name}:`, err);
+    if (readmeViewer.dataset.index === String(index)) {
+      showMessage(readmeViewer, `Could not load the README for ${r.name}. Please try again later.`);
+    }
   }
 }
 
-if (document.getElementById('project-menu')) {
-  const projectMenu = document.getElementById('project-menu');
+function renderProjectMenu(projectMenu) {
+  if (repos.length === 0) {
+    showMessage(projectMenu, 'No projects are available right now.');
+    return;
+  }
 
-  const buildMenu = () => {
-    if (repos.length === 0) { setTimeout(buildMenu, 100); return; }
+  const heading = document.createElement('h3');
+  heading.textContent = 'Projects';
+  const links = repos.map((repo, index) => {
+    const link = document.createElement('a');
+    link.href = '#readme-viewer';
+    link.dataset.index = String(index);
+    link.className = index === 0 ? 'active' : '';
+    link.textContent = repo.name;
+    return link;
+  });
 
-    projectMenu.innerHTML = '<h3>Projects</h3>' + repos.map((r, i) =>
-      `<a href="#" data-index="${i}" class="${i === 0 ? 'active' : ''}">${r.name}</a>`
-    ).join('');
+  projectMenu.replaceChildren(heading, ...links);
+  projectMenu.addEventListener('click', event => {
+    const link = event.target.closest('a[data-index]');
+    if (!link || !projectMenu.contains(link)) return;
+    event.preventDefault();
 
-    projectMenu.addEventListener('click', (e) => {
-      const link = e.target.closest('a[data-index]');
-      if (!link) return;
-      e.preventDefault();
+    projectMenu.querySelectorAll('a[data-index]').forEach(item => item.classList.remove('active'));
+    link.classList.add('active');
+    loadReadme(Number(link.dataset.index));
+  });
 
-      projectMenu.querySelectorAll('a').forEach(a => a.classList.remove('active'));
-      link.classList.add('active');
-
-      loadReadme(parseInt(link.dataset.index));
-    });
-
-    loadReadme(0);
-  };
-
-  buildMenu();
+  loadReadme(0);
 }
 
 // --- Init ---
 loadRepos();   
 
-// --- Education Accordion ---
-document.querySelectorAll('.edu-header').forEach(header => {
-  header.addEventListener('click', () => {
-    const item = header.parentElement;
-    item.classList.toggle('open');
-  });
-});   
-
+// --- Work and Education Disclosures ---
 document.querySelectorAll('.work-item-header').forEach(header => {
   header.addEventListener('click', () => {
     const item = header.parentElement;
@@ -190,12 +311,13 @@ document.querySelectorAll('.work-item-header').forEach(header => {
       item.classList.add('open');
     }
   });
-});   
+});
 
 // --- Typing Animation ---
 const roles = ['Data Analyst', 'Software Developer', 'Software Designer','Game Enthusiast', 'Software Engineer'];
 const typingEl = document.getElementById('typing');
 let roleIndex = 0, charIndex = 0, deleting = false;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function type() {
   const current = roles[roleIndex];
@@ -218,11 +340,17 @@ function type() {
   setTimeout(type, deleting ? 50 : 100);
 }
 
-type();   
+if (typingEl) {
+  if (prefersReducedMotion) {
+    typingEl.textContent = roles[0];
+  } else {
+    type();
+  }
+}
 
 // --- Floating Particles ---
 const canvas = document.getElementById('bg-particles');
-if (canvas) {
+if (canvas && !prefersReducedMotion) {
   const ctx = canvas.getContext('2d');
   let particles = [];
 
